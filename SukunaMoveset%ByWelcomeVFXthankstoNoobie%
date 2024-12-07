@@ -1,3 +1,47 @@
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local ImpactFrames = Instance.new("Folder")
+ImpactFrames.Name = "ImpactFrames"
+ImpactFrames.Parent = ScreenGui
+
+local Cooldown = 4.5 -- how much time until it vanishes after completing the images
+local Speed = 0.03 -- how much time per every new image to appear
+
+local imageIds = {
+    "rbxassetid://93398394745767",
+    "rbxassetid://93398394745767"
+}
+
+for i = 1, #imageIds do
+    local ImageLabel = Instance.new("ImageLabel")
+    ImageLabel.Name = tostring(i)
+    ImageLabel.Size = UDim2.new(0.005, 0, 0, 0)
+    ImageLabel.Position = UDim2.new(0, 0, 0, 0)
+    ImageLabel.ImageTransparency = 0
+    ImageLabel.BackgroundTransparency = 1
+    ImageLabel.Visible = true
+    ImageLabel.Parent = ImpactFrames
+    ImageLabel.Image = imageIds[i]
+    task.wait()
+end
+
+for i = 1, #ImpactFrames:GetChildren() - 1 do
+    local currentImage = ImpactFrames:GetChildren()[i]
+    currentImage.Size = UDim2.new(1, 0, 1, 100)
+    currentImage.Position = UDim2.new(0, 0, 0, -100)
+    task.wait(Speed)
+    currentImage.ImageTransparency = 1
+end
+
+local lastImage = ImpactFrames:GetChildren()[#ImpactFrames:GetChildren()]
+lastImage.Size = UDim2.new(1, 0, 1, 100)
+lastImage.Position = UDim2.new(0, 0, 0, -100)
+task.wait(Speed)
+task.wait(Cooldown)
+lastImage.ImageTransparency = 1
+ScreenGui:Destroy()
+
 --- Services
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -61,7 +105,7 @@ local creditText = Instance.new("TextLabel")
 creditText.Size = UDim2.new(1, 0, 0, 20) -- size
 creditText.Position = UDim2.new(0, 0, 0, 0) -- Top
 creditText.BackgroundTransparency = 1 -- bg
-creditText.Text = "SUKUNA MOVESET VFX BY camerawo and by Welcome ON DISCORD"
+creditText.Text = "SUKUNA MOVESET by Welcome ON DISCORD"
 creditText.TextColor3 = Color3.new(1, 1, 1) --clr
 creditText.Font = Enum.Font.SourceSans
 creditText.TextScaled = true -- scale
@@ -72,10 +116,25 @@ game.StarterGui:SetCore("SendNotification", {
         Title = "SUKUNA MOVESET BY WELCOME";
         Text = " Made By WELCOME On Discord";
         Duration = 5;
-        Icon = "rbxassetid://1728569369781000"; -- image id if you don't wanna add it leave it like that
+        Icon = "rbxassetid://96981676128126"; -- image id if you don't wanna add it leave it like that
 })
 
-local ToolName = "Fire Cleave"
+-- time changer
+
+local success, errorMessage = pcall(function()
+    local player = game.Players.LocalPlayer
+    local Lighting = game:GetService("Lighting")
+
+    Lighting.TimeOfDay = "00:00:00"
+    Lighting.Brightness = 0
+    Lighting.OutdoorAmbient = Color3.fromRGB(30, 30, 30)
+end)
+
+if not success then
+    warn("Error: " .. errorMessage)
+end
+
+local ToolName = "Malevolent Shrine"
 local Animation = your_animationid
 
 local t = Instance.new("Tool")
@@ -83,7 +142,55 @@ t.Name = ToolName
 t.RequiresHandle = false
 t.CanBeDropped = false
 t.Parent = game.Players.LocalPlayer.Backpack
-t.Activated:Connect(function()local Test = ((game.ReplicatedStorage.Resources.CrabBeam.Blaswwwt.dashpunch.Attachment))
+t.Activated:Connect(function()local ModelId = 15436321661
+
+local MoveRight = 0
+local MoveLeft = 0
+local MoveUp = 0
+local MoveDown = 0
+local MoveBack = 5
+local MoveForward = 0
+
+-- don't change anything here unless you know
+local d = game:GetObjects("rbxassetid://" .. ModelId)[1]
+if d:IsA("Part") then
+d.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
+d.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+elseif d:IsA("Model") then
+if not d.PrimaryPart then
+local p = Instance.new("Part")
+p.Transparency = 1
+p.Anchored = true
+p.CanCollide = false
+p.Parent = d
+d.Parent = workspace
+d.PrimaryPart = p
+d:SetPrimaryPartCFrame(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(MoveRight - MoveLeft, MoveUp - MoveDown, MoveBack - MoveForward))
+else
+d.Parent = workspace
+d:SetPrimaryPartCFrame(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(MoveRight - MoveLeft, MoveUp - MoveDown, MoveBack - MoveForward))
+end
+end
+local a = Instance.new("Animation")
+a.AnimationId = "rbxassetid://" .. Animation
+local p = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a)
+p:Play()
+end)
+
+local ToolName = "Cursed Imbued Arrow"
+local Animation = 17861840167
+
+local t = Instance.new("Tool")
+t.Name = ToolName
+t.RequiresHandle = false
+t.CanBeDropped = false
+t.Parent = game.Players.LocalPlayer.Backpack
+t.Activated:Connect(function()local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://158853971"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
+local Test = ((game.ReplicatedStorage.Resources.Fang.OneInch.dash3.VFX))
 local test = Test:Clone()
 test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
 
@@ -91,24 +198,71 @@ test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
 for _, child in ipairs(test:GetChildren()) do
     if child:IsA("ParticleEmitter") then
         
-        
+        child.Color = ColorSequence.new(Color3.new(254, 1, 0))
         child:Emit(15)
         child.Enabled = false
     end
 end
-local Test = ((game.ReplicatedStorage.Resources.StoicBomb.HEAT.Part.Attachment))
-local test = Test:Clone()
-test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
-
-
-for _, child in ipairs(test:GetChildren()) do
-    if child:IsA("ParticleEmitter") then
-        
-        
-        child:Emit(15)
-        child.Enabled = false
+coroutine.wrap(function()
+    local ts = game:GetService("TweenService")
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+ 
+    local Dialogue = Instance.new("BillboardGui")
+    local Chat1 = Instance.new("Frame")
+    local Sub = Instance.new("TextLabel")
+ 
+    Dialogue.Active = true
+    Dialogue.Size = UDim2.new(15, 0, 15, 0)
+    Dialogue.StudsOffset = Vector3.new(0, 0, 2)
+    Dialogue.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Dialogue.Name = "Dialogue"
+    Dialogue.Parent = humanoidRootPart
+ 
+    Chat1.AnchorPoint = Vector2.new(0.5, 0.5)
+    Chat1.BackgroundColor3 = Color3.new(1, 1, 1)
+    Chat1.BorderColor3 = Color3.new(0, 0, 0)
+    Chat1.BorderSizePixel = 2
+    Chat1.Position = UDim2.new(0.600000024, 0, -0.2, 0)
+    Chat1.Size = UDim2.new(0.100000001, 0, 0.200000003, 0)
+    Chat1.Name = "Chat1"
+    Chat1.BackgroundTransparency = 1
+    Chat1.Parent = Dialogue
+ 
+    Sub.FontFace = Font.new("rbxassetid://12187375716", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+    Sub.Text = "Fuga.."
+    Sub.TextColor3 = Color3.new(0, 0, 0)
+    Sub.TextScaled = true
+    Sub.TextSize = 14
+    Sub.TextWrapped = true
+    Sub.AnchorPoint = Vector2.new(0.5, 0.5)
+    Sub.BackgroundColor3 = Color3.new(1, 1, 1)
+    Sub.TextTransparency = 1
+    Sub.BorderColor3 = Color3.new(0, 0, 0)
+    Sub.BorderSizePixel = 0
+    Sub.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Sub.Size = UDim2.new(0.850000024, 0, 0.349999994, 0)
+    Sub.Name = "Sub"
+    Sub.Parent = Chat1
+ 
+    game.Debris:AddItem(Chat1, 25)
+    game.Debris:AddItem(Sub, 25)
+ 
+    local function tweenProperty(object, properties, time)
+        local tweenInfo = TweenInfo.new(time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = ts:Create(object, tweenInfo, properties)
+        tween:Play()
+        return tween
     end
-end
+ 
+    tweenProperty(Chat1, {BackgroundTransparency = 0}, 1)
+    tweenProperty(Sub, {TextTransparency = 0}, 1)
+    tweenProperty(Chat1, {Position = UDim2.new(0.6, 0, 0.4, 0)}, 1)
+    task.wait(4)
+    tweenProperty(Chat1, {BackgroundTransparency = 1}, 2)
+    tweenProperty(Sub, {TextTransparency = 1}, 2)
+end)()
 local a = Instance.new("Animation")
 a.AnimationId = "rbxassetid://" .. Animation
 local p = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a)
@@ -178,7 +332,7 @@ local baseButton = hotbarFrame:FindFirstChild("2").Base
 local ToolName = baseButton.ToolName
 
 
-ToolName.Text = "Fuga"
+ToolName.Text = "Dismantled Smash"
 
 -- Moves 3 Name
 
@@ -217,7 +371,7 @@ local baseButton = hotbarFrame:FindFirstChild("4").Base
 local ToolName = baseButton.ToolName
 
 
-ToolName.Text = "Subspace Dismantle"
+ToolName.Text = "Barrage Wisdom"
 
 
 local Players = game:GetService("Players")
@@ -285,47 +439,152 @@ for _, animTrack in pairs(Humanoid:GetPlayingAnimationTracks()) do
 
     animTrack:Stop()
 
+local Test =  ((game.ReplicatedStorage.Resources.KJEffects.KJWallCombo.FinalImpactHUGEignore:GetChildren()[2]))
+
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+        child.Color = ColorSequence.new(Color3.new(255, 0, 0))
+        child:Emit(1)
+        child.Enabled = false
+    end
+end
+local Test = game:GetService("ReplicatedStorage").Resources.FSSlash.Attachment
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+        child.Color = ColorSequence.new(Color3.new(255, 0, 0))
+        child:Emit(1)
+        child.Enabled = false
+    end
+end
+local Test = game:GetService("ReplicatedStorage").Resources.FuneralEffect.Slash_Angled
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+        child.Color = ColorSequence.new(Color3.new(255, 0, 0))
+        child:Emit(1)
+        child.Enabled = false
+    end
+end
+local Test =  ((game.ReplicatedStorage.Resources.KJEffects.KJWallCombo.FinalImpactHUGEignore:GetChildren()[5]))
+
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+        child.Color = ColorSequence.new(Color3.new(255, 0, 0))
+        child:Emit(1)
+        child.Enabled = false
+    end
+end
+local Test =  ((game.ReplicatedStorage.Resources.KJEffects.KJWallCombo.FinalImpactHUGEignore:GetChildren()[2]))
+
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+        child.Color = ColorSequence.new(Color3.new(255, 0, 0))
+        child:Emit(1)
+        child.Enabled = false
+    end
+end
+local Test = ((game.ReplicatedStorage.Resources.CrabBeam.Blaswwwt.dashpunch.Attachment))
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+        
+        child:Emit(1)
+        child.Enabled = false
+    end
+end
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://5985793946"
 sound.Volume = 1
 sound.Parent = workspace
 sound:Play()
-local assetId = 140382748795369 -- remember camerawoman this is dismantle since I have memory loss 
-
-local soundId = "rbxassetid://5985793946"
-
-local effect = game:GetObjects("rbxassetid://" .. assetId)[1]
-
-local sound = Instance.new("Sound")
-sound.SoundId = soundId
-sound.Parent = game.Workspace
-sound:Play()
-
-if effect then
-    local character = game.Players.LocalPlayer.Character
-    if character then
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-
-        if humanoidRootPart then
-            effect.Parent = game.Workspace
-
-            local forwardOffset = 5
-            local targetPosition = humanoidRootPart.CFrame * CFrame.new(0, 0, -forwardOffset)
-
-            for _, part in pairs(effect:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = false
-                    part.Anchored = true
-                    part.CFrame = targetPosition
-                end
-            end
-
-            wait(1)
-
-            effect:Destroy()
-        end
+coroutine.wrap(function()
+    local ts = game:GetService("TweenService")
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+ 
+    local Dialogue = Instance.new("BillboardGui")
+    local Chat1 = Instance.new("Frame")
+    local Sub = Instance.new("TextLabel")
+ 
+    Dialogue.Active = true
+    Dialogue.Size = UDim2.new(15, 0, 15, 0)
+    Dialogue.StudsOffset = Vector3.new(0, 0, 2)
+    Dialogue.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Dialogue.Name = "Dialogue"
+    Dialogue.Parent = humanoidRootPart
+ 
+    Chat1.AnchorPoint = Vector2.new(0.5, 0.5)
+    Chat1.BackgroundColor3 = Color3.new(1, 1, 1)
+    Chat1.BorderColor3 = Color3.new(0, 0, 0)
+    Chat1.BorderSizePixel = 2
+    Chat1.Position = UDim2.new(0.600000024, 0, -0.2, 0)
+    Chat1.Size = UDim2.new(0.100000001, 0, 0.200000003, 0)
+    Chat1.Name = "Chat1"
+    Chat1.BackgroundTransparency = 1
+    Chat1.Parent = Dialogue
+ 
+    Sub.FontFace = Font.new("rbxassetid://12187375716", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+    Sub.Text = "Cleave...!"
+    Sub.TextColor3 = Color3.new(0, 0, 0)
+    Sub.TextScaled = true
+    Sub.TextSize = 14
+    Sub.TextWrapped = true
+    Sub.AnchorPoint = Vector2.new(0.5, 0.5)
+    Sub.BackgroundColor3 = Color3.new(1, 1, 1)
+    Sub.TextTransparency = 1
+    Sub.BorderColor3 = Color3.new(0, 0, 0)
+    Sub.BorderSizePixel = 0
+    Sub.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Sub.Size = UDim2.new(0.850000024, 0, 0.349999994, 0)
+    Sub.Name = "Sub"
+    Sub.Parent = Chat1
+ 
+    game.Debris:AddItem(Chat1, 25)
+    game.Debris:AddItem(Sub, 25)
+ 
+    local function tweenProperty(object, properties, time)
+        local tweenInfo = TweenInfo.new(time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = ts:Create(object, tweenInfo, properties)
+        tween:Play()
+        return tween
     end
-end
+ 
+    tweenProperty(Chat1, {BackgroundTransparency = 0}, 1)
+    tweenProperty(Sub, {TextTransparency = 0}, 1)
+    tweenProperty(Chat1, {Position = UDim2.new(0.6, 0, 0.4, 0)}, 1)
+    task.wait(4)
+    tweenProperty(Chat1, {BackgroundTransparency = 1}, 2)
+    tweenProperty(Sub, {TextTransparency = 1}, 2)
+end)()
 
 end
 
@@ -383,12 +642,8 @@ for _, animTrack in pairs(Humanoid:GetPlayingAnimationTracks()) do
 
     animTrack:Stop()
 
-local sound = Instance.new("Sound")
-sound.SoundId = "rbxassetid://17325303798"
-sound.Volume = 1
-sound.Parent = workspace
-sound:Play()
-local Test = ((game.ReplicatedStorage.Resources.Sunblitz.Stomp.Stomp.Attachment))
+local Test =  ((game.ReplicatedStorage.Resources.KJEffects.KJWallCombo.FinalImpactHUGEignore:GetChildren()[2]))
+
 local test = Test:Clone()
 test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
 
@@ -396,11 +651,76 @@ test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
 for _, child in ipairs(test:GetChildren()) do
     if child:IsA("ParticleEmitter") then
         
-        
-        child:Emit(15)
+        child.Color = ColorSequence.new(Color3.new(255, 0, 0))
+        child:Emit(5)
         child.Enabled = false
     end
 end
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://17325303798"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
+coroutine.wrap(function()
+    local ts = game:GetService("TweenService")
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+ 
+    local Dialogue = Instance.new("BillboardGui")
+    local Chat1 = Instance.new("Frame")
+    local Sub = Instance.new("TextLabel")
+ 
+    Dialogue.Active = true
+    Dialogue.Size = UDim2.new(15, 0, 15, 0)
+    Dialogue.StudsOffset = Vector3.new(0, 0, 2)
+    Dialogue.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Dialogue.Name = "Dialogue"
+    Dialogue.Parent = humanoidRootPart
+ 
+    Chat1.AnchorPoint = Vector2.new(0.5, 0.5)
+    Chat1.BackgroundColor3 = Color3.new(1, 1, 1)
+    Chat1.BorderColor3 = Color3.new(0, 0, 0)
+    Chat1.BorderSizePixel = 2
+    Chat1.Position = UDim2.new(0.600000024, 0, -0.2, 0)
+    Chat1.Size = UDim2.new(0.100000001, 0, 0.200000003, 0)
+    Chat1.Name = "Chat1"
+    Chat1.BackgroundTransparency = 1
+    Chat1.Parent = Dialogue
+ 
+    Sub.FontFace = Font.new("rbxassetid://12187375716", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+    Sub.Text = "Dismantle"
+    Sub.TextColor3 = Color3.new(0, 0, 0)
+    Sub.TextScaled = true
+    Sub.TextSize = 14
+    Sub.TextWrapped = true
+    Sub.AnchorPoint = Vector2.new(0.5, 0.5)
+    Sub.BackgroundColor3 = Color3.new(1, 1, 1)
+    Sub.TextTransparency = 1
+    Sub.BorderColor3 = Color3.new(0, 0, 0)
+    Sub.BorderSizePixel = 0
+    Sub.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Sub.Size = UDim2.new(0.850000024, 0, 0.349999994, 0)
+    Sub.Name = "Sub"
+    Sub.Parent = Chat1
+ 
+    game.Debris:AddItem(Chat1, 25)
+    game.Debris:AddItem(Sub, 25)
+ 
+    local function tweenProperty(object, properties, time)
+        local tweenInfo = TweenInfo.new(time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = ts:Create(object, tweenInfo, properties)
+        tween:Play()
+        return tween
+    end
+ 
+    tweenProperty(Chat1, {BackgroundTransparency = 0}, 1)
+    tweenProperty(Sub, {TextTransparency = 0}, 1)
+    tweenProperty(Chat1, {Position = UDim2.new(0.6, 0, 0.4, 0)}, 1)
+    task.wait(4)
+    tweenProperty(Chat1, {BackgroundTransparency = 1}, 2)
+    tweenProperty(Sub, {TextTransparency = 1}, 2)
+end)()
 
 end
 
@@ -489,6 +809,73 @@ for _, child in ipairs(test:GetChildren()) do
         child.Enabled = false
     end
 end
+local final1 = game.ReplicatedStorage.Resources.CrabSlash["Slam"].Part.Attachment:Clone()
+final1.Parent = game.Players.LocalPlayer.Character["Torso"]
+for _, child in ipairs(final1:GetChildren()) do
+    if child:IsA("ParticleEmitter") then -- Check if the child is a ParticleEmitter
+        child:Emit(3) -- Emits 2 partical
+    end
+end
+coroutine.wrap(function()
+    local ts = game:GetService("TweenService")
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+ 
+    local Dialogue = Instance.new("BillboardGui")
+    local Chat1 = Instance.new("Frame")
+    local Sub = Instance.new("TextLabel")
+ 
+    Dialogue.Active = true
+    Dialogue.Size = UDim2.new(15, 0, 15, 0)
+    Dialogue.StudsOffset = Vector3.new(0, 0, 2)
+    Dialogue.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Dialogue.Name = "Dialogue"
+    Dialogue.Parent = humanoidRootPart
+ 
+    Chat1.AnchorPoint = Vector2.new(0.5, 0.5)
+    Chat1.BackgroundColor3 = Color3.new(1, 1, 1)
+    Chat1.BorderColor3 = Color3.new(0, 0, 0)
+    Chat1.BorderSizePixel = 2
+    Chat1.Position = UDim2.new(0.600000024, 0, -0.2, 0)
+    Chat1.Size = UDim2.new(0.100000001, 0, 0.200000003, 0)
+    Chat1.Name = "Chat1"
+    Chat1.BackgroundTransparency = 1
+    Chat1.Parent = Dialogue
+ 
+    Sub.FontFace = Font.new("rbxassetid://12187375716", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+    Sub.Text = "Fool.."
+    Sub.TextColor3 = Color3.new(0, 0, 0)
+    Sub.TextScaled = true
+    Sub.TextSize = 14
+    Sub.TextWrapped = true
+    Sub.AnchorPoint = Vector2.new(0.5, 0.5)
+    Sub.BackgroundColor3 = Color3.new(1, 1, 1)
+    Sub.TextTransparency = 1
+    Sub.BorderColor3 = Color3.new(0, 0, 0)
+    Sub.BorderSizePixel = 0
+    Sub.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Sub.Size = UDim2.new(0.850000024, 0, 0.349999994, 0)
+    Sub.Name = "Sub"
+    Sub.Parent = Chat1
+ 
+    game.Debris:AddItem(Chat1, 25)
+    game.Debris:AddItem(Sub, 25)
+ 
+    local function tweenProperty(object, properties, time)
+        local tweenInfo = TweenInfo.new(time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = ts:Create(object, tweenInfo, properties)
+        tween:Play()
+        return tween
+    end
+ 
+    tweenProperty(Chat1, {BackgroundTransparency = 0}, 1)
+    tweenProperty(Sub, {TextTransparency = 0}, 1)
+    tweenProperty(Chat1, {Position = UDim2.new(0.6, 0, 0.4, 0)}, 1)
+    task.wait(4)
+    tweenProperty(Chat1, {BackgroundTransparency = 1}, 2)
+    tweenProperty(Sub, {TextTransparency = 1}, 2)
+end)()
 
 end
 
@@ -706,6 +1093,66 @@ collateral4.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
             child:Emit(2) -- Emit 20 particles
         end
     end
+coroutine.wrap(function()
+    local ts = game:GetService("TweenService")
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+ 
+    local Dialogue = Instance.new("BillboardGui")
+    local Chat1 = Instance.new("Frame")
+    local Sub = Instance.new("TextLabel")
+ 
+    Dialogue.Active = true
+    Dialogue.Size = UDim2.new(15, 0, 15, 0)
+    Dialogue.StudsOffset = Vector3.new(0, 0, 2)
+    Dialogue.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Dialogue.Name = "Dialogue"
+    Dialogue.Parent = humanoidRootPart
+ 
+    Chat1.AnchorPoint = Vector2.new(0.5, 0.5)
+    Chat1.BackgroundColor3 = Color3.new(1, 1, 1)
+    Chat1.BorderColor3 = Color3.new(0, 0, 0)
+    Chat1.BorderSizePixel = 2
+    Chat1.Position = UDim2.new(0.600000024, 0, -0.2, 0)
+    Chat1.Size = UDim2.new(0.100000001, 0, 0.200000003, 0)
+    Chat1.Name = "Chat1"
+    Chat1.BackgroundTransparency = 1
+    Chat1.Parent = Dialogue
+ 
+    Sub.FontFace = Font.new("rbxassetid://12187375716", Enum.FontWeight.Bold, Enum.FontStyle.Italic)
+    Sub.Text = "Let's Be A Curse."
+    Sub.TextColor3 = Color3.new(0, 0, 0)
+    Sub.TextScaled = true
+    Sub.TextSize = 14
+    Sub.TextWrapped = true
+    Sub.AnchorPoint = Vector2.new(0.5, 0.5)
+    Sub.BackgroundColor3 = Color3.new(1, 1, 1)
+    Sub.TextTransparency = 1
+    Sub.BorderColor3 = Color3.new(0, 0, 0)
+    Sub.BorderSizePixel = 0
+    Sub.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Sub.Size = UDim2.new(0.850000024, 0, 0.349999994, 0)
+    Sub.Name = "Sub"
+    Sub.Parent = Chat1
+ 
+    game.Debris:AddItem(Chat1, 25)
+    game.Debris:AddItem(Sub, 25)
+ 
+    local function tweenProperty(object, properties, time)
+        local tweenInfo = TweenInfo.new(time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = ts:Create(object, tweenInfo, properties)
+        tween:Play()
+        return tween
+    end
+ 
+    tweenProperty(Chat1, {BackgroundTransparency = 0}, 1)
+    tweenProperty(Sub, {TextTransparency = 0}, 1)
+    tweenProperty(Chat1, {Position = UDim2.new(0.6, 0, 0.4, 0)}, 1)
+    task.wait(4)
+    tweenProperty(Chat1, {BackgroundTransparency = 1}, 2)
+    tweenProperty(Sub, {TextTransparency = 1}, 2)
+end)()
 
 end
 
@@ -771,7 +1218,7 @@ local baseButton = hotbarFrame:FindFirstChild("2").Base
 local ToolName = baseButton.ToolName
 
 
-ToolName.Text = "Fuga"
+ToolName.Text = "Dismantled Smash"
 
 -- Moves 3 Name
 
@@ -810,7 +1257,7 @@ local baseButton = hotbarFrame:FindFirstChild("4").Base
 local ToolName = baseButton.ToolName
 
 
-ToolName.Text = "Subspace Dismantle"
+ToolName.Text = "Barrage Wisdom"
 
 
 local Players = game:GetService("Players")
@@ -854,7 +1301,7 @@ findGuiAndSetText()
 
 -- Move 1 here
 
-local animationId = 14374357351
+local animationId = 13532562418
 
 
 local player = game.Players.LocalPlayer
@@ -877,8 +1324,24 @@ local Humanoid = p.Character:WaitForChild("Humanoid")
 for _, animTrack in pairs(Humanoid:GetPlayingAnimationTracks()) do
 
     animTrack:Stop()
+local cooldown = 3
 
-local Test = ((game.ReplicatedStorage.Resources.StoicBomb.HEAT.Part.Attachment))
+local duration = 4
+---dont change anything
+local Test = game.ReplicatedStorage.Resources.AtomicFX.MainEffect.Attachment.Slash2.Shoot
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+
+        child:Emit(15)
+        child.Enabled = false
+    end
+end
+local Test = ((game.ReplicatedStorage.Resources.CrabBeam.Blaswwwt.dashpunch.Attachment))
 local test = Test:Clone()
 test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
 
@@ -887,17 +1350,22 @@ for _, child in ipairs(test:GetChildren()) do
     if child:IsA("ParticleEmitter") then
         
         
-        child:Emit(15)
+        child:Emit(1)
         child.Enabled = false
     end
 end
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://5985793946"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
 
 end
 
 
 local AnimAnim = Instance.new("Animation")
 
-AnimAnim.AnimationId = "rbxassetid://12467789963"
+AnimAnim.AnimationId = "rbxassetid://16515503507"
 
 local Anim = Humanoid:LoadAnimation(AnimAnim)
 
@@ -924,7 +1392,7 @@ end
 humanoid.AnimationPlayed:Connect(onAnimationPlayed)
 
 
-local animationId = 14798608838
+local animationId = 13532600125
 
 
 local player = game.Players.LocalPlayer
@@ -948,7 +1416,20 @@ for _, animTrack in pairs(Humanoid:GetPlayingAnimationTracks()) do
 
     animTrack:Stop()
 
-local Test = ((game.ReplicatedStorage.Resources.Sunblitz.Stomp.Stomp.Attachment))
+local Test = game.ReplicatedStorage.Resources.AtomicFX.MainEffect.Attachment.Slash2.Shoot
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+
+        child:Emit(15)
+        child.Enabled = false
+    end
+end
+local Test = ((game.ReplicatedStorage.Resources.CrabBeam.Blaswwwt.dashpunch.Attachment))
 local test = Test:Clone()
 test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
 
@@ -957,27 +1438,32 @@ for _, child in ipairs(test:GetChildren()) do
     if child:IsA("ParticleEmitter") then
         
         
-        child:Emit(15)
-        child.Enabled = false
+        child:Emit(1)
+        child.Enabled = false 
     end
 end
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://5985793946"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
 
 end
 
 
 local AnimAnim = Instance.new("Animation")
 
-AnimAnim.AnimationId = "rbxassetid://12463072679"
+AnimAnim.AnimationId = "rbxassetid://16515520431"
 
 local Anim = Humanoid:LoadAnimation(AnimAnim)
 
 
-local startTime = 0
+local startTime = 1
 
 
 Anim:Play()
 
-Anim:AdjustSpeed(0.5)
+Anim:AdjustSpeed(1)
 
 Anim.TimePosition = startTime
 
@@ -994,7 +1480,7 @@ end
 humanoid.AnimationPlayed:Connect(onAnimationPlayed)
 
 
-local animationId = 12447247483
+local animationId = 13532604085
 
 
 local player = game.Players.LocalPlayer
@@ -1018,49 +1504,44 @@ for _, animTrack in pairs(Humanoid:GetPlayingAnimationTracks()) do
 
     animTrack:Stop()
 
-local assetId = 140382748795369 -- remember camerawoman this is dismantle since I have memory loss 
+local Test = game.ReplicatedStorage.Resources.AtomicFX.MainEffect.Attachment.Slash2.Shoot
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
 
-local soundId = "rbxassetid://7399866274"
 
-local effect = game:GetObjects("rbxassetid://" .. assetId)[1]
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
 
-local sound = Instance.new("Sound")
-sound.SoundId = soundId
-sound.Parent = game.Workspace
-sound:Play()
-
-if effect then
-    local character = game.Players.LocalPlayer.Character
-    if character then
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-
-        if humanoidRootPart then
-            effect.Parent = game.Workspace
-
-            local forwardOffset = 5
-            local targetPosition = humanoidRootPart.CFrame * CFrame.new(0, 0, -forwardOffset)
-
-            for _, part in pairs(effect:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = false
-                    part.Anchored = true
-                    part.CFrame = targetPosition
-                end
-            end
-
-            wait(1)
-
-            effect:Destroy()
-        end
+        child:Emit(15)
+        child.Enabled = false
     end
 end
+local Test = ((game.ReplicatedStorage.Resources.CrabBeam.Blaswwwt.dashpunch.Attachment))
+local test = Test:Clone()
+test.Parent = game.Players.LocalPlayer.Character["HumanoidRootPart"]
+
+
+for _, child in ipairs(test:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        
+        
+        child:Emit(1)
+        child.Enabled = false
+    end
+end
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://5985793946"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
 
 end
 
 
 local AnimAnim = Instance.new("Animation")
 
-AnimAnim.AnimationId = "rbxassetid://Animation id here"
+AnimAnim.AnimationId = "rbxassetid://16515448089"
 
 local Anim = Humanoid:LoadAnimation(AnimAnim)
 
@@ -1074,7 +1555,7 @@ Anim:AdjustSpeed(1)
 
 Anim.TimePosition = startTime
 
-Anim:AdjustSpeed(1.1)
+Anim:AdjustSpeed(0.8)
 
 
 delay(1.8, function()
@@ -1094,7 +1575,7 @@ end
 humanoid.AnimationPlayed:Connect(onAnimationPlayed)
 
 
-local animationId = 13603396939
+local animationId = 12342141464
 
 
 local player = game.Players.LocalPlayer
@@ -1117,12 +1598,18 @@ for _, animTrack in pairs(Humanoid:GetPlayingAnimationTracks()) do
 
     animTrack:Stop()
 
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://5985793946"
+sound.Volume = 1
+sound.Parent = workspace
+sound:Play()
+
 end
 
 
 local AnimAnim = Instance.new("Animation")
 
-AnimAnim.AnimationId = "rbxassetid://Animation id here"
+AnimAnim.AnimationId = "rbxassetid:// 16515503507"
 
 local Anim = Humanoid:LoadAnimation(AnimAnim)
 
